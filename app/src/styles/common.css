@@ -1,0 +1,56 @@
+.span{
+    display:block;
+    text-align:center
+}
+
+
+.nav > li{
+    width:300px;
+}
+
+.nav > li > a>span{
+    color: #000000;
+    font-size:20px;
+    font-family:Microsoft YaHei;
+    letter-spacing: 10px;
+    padding-left: 10px
+}
+
+.nav:hover > li > a>span{
+    color: #9ca3ac;
+}
+.nav:active > li > a>span{
+    color: #bfdcff;
+}
+
+.navbar-nav > li > a:hover,
+.navbar-nav > li > a:focus{
+    color: #000000;
+    font-weight:bold;
+    background-color: white ;
+}
+
+
+.navbar-nav > li > a:hover,
+.navbar-nav > li > a:focus>span{
+    color: #000000;
+}
+
+
+
+
+.navbar-nav > li > a:hover> span{
+    color: #000000;
+    padding-bottom: 5px;
+    border-bottom:  5px solid #a60fff;
+}
+
+.navbar-nav > li > a:focus> span{
+    color: #000000;
+    padding-bottom: 5px;
+    border-bottom:  5px solid #a60fff;
+}
+
+
+
+
