@@ -22,10 +22,15 @@ var reload = browserSync.reload;
 
 var url = require('url');
 var mockApi = require('./mockApi');
+var del = require('del');  //删除文件
+
+//自动化部署阿里云服务器所需
+var minimist = require('minimist');
+var GulpSSH = require('gulp-ssh');
 
 var distFolderUrl = "appDist";
 gulp.task('clean', function () {
-    return require('del')([distFolderUrl + '/**','tmp/**','dist/**']);
+    return del([distFolderUrl + '/**','tmp/**','dist/**']);
 });
 
 
@@ -144,7 +149,7 @@ gulp.task('css', ['less'], function() {
 })
 
 
-var jsList = [
+var jsList = [                    //所有JS代码在开发目录中位置
     './app/*.js',
     './app/src/directives/*.js',
     './app/src/controllers/*.js',
@@ -153,14 +158,16 @@ var jsList = [
     './tmp/templates/*.js',
 ];
 
+//***********JS代码检查*************************************************************
 gulp.task('jshint', function () {
     return gulp.src(jsList)
         .pipe(reload({stream: true, once: true}))
         .pipe(jshint())
         .pipe(jshint.reporter('jshint-stylish'))
 });
+//*********************************************************************************
 
-// gulp.task('js', ['jshint'], function () {
+//***********把JS代码从开发目录拷贝到部署目录并打包********************************
 gulp.task('js', ['templatesTpls','templatesViews'], function () {
     return gulp.src(jsList)
         .pipe(concat('app.min.js'))
@@ -176,7 +183,7 @@ gulp.task('js', ['templatesTpls','templatesViews'], function () {
         }))
         .pipe(gulp.dest(distFolderUrl + '/static/js'))
 });
-
+//*************************************************************************************
 
 gulp.task('htmlVendor', function () {
     return gulp.src(['app/index-vendor.html'])
@@ -260,6 +267,31 @@ gulp.task('serve-release',  function () {
 
 });
 
-
+//***********自动部署到阿里云服务器***************************************************
+  //载入配置文件
+var config = require(`./config.aliyun.js`);
+var sshConfig = config.ssh;
+  //打开ssh通道
+var gulpSSH = new GulpSSH({
+  ignoreErrors: false,
+  sshConfig: sshConfig
+});
+console.log(sshConfig);
+  //删除阿里云服务器部署根目录上的文件
+gulp.task('removeRemoteFiles', function() {
+  console.log('删除服务器上现有文件...');
+  return gulpSSH.shell(config.commands, {filePath: 'commands.log'})
+    .pipe(gulp.dest('logs')); //在本地项目文件夹保存远程命令日志
+});
+//上传本地项目文件到阿里云服务器
+gulp.task('deployAli', ['removeRemoteFiles'],function() {
+  console.log('2s后开始上传文件...');
+  setTimeout(function(){
+    return gulp
+      .src(['./app/**', '!**/node_modules/**'])
+      .pipe(gulpSSH.dest(config.remoteDir));
+  },2000);
+});
+//*********************************************************************************
 
 
