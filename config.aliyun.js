@@ -12,8 +12,12 @@ module.exports = {
         password: '5843344520yyY',
     },
     remoteDir: `${serverRootDir}/${appName}`,
-    commands: [
-        //删除现有文件
-        `rm -rf ${serverRootDir}/${appName}/*`
+    commandsRemoveAll: [
+    //删除现有文件
+    `rm -rf ${serverRootDir}/${appName}/*`
+    ],
+    commandsRemoveNotAll: [
+    //删除除bower_components文件夹外的所有文件
+    `find ${serverRootDir}/${appName}/* -path ${serverRootDir}/${appName}/bower_components -prune -o -print | xargs rm -fr `
     ]
 };

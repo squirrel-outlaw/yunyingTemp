@@ -5,7 +5,7 @@
 
 
 .nav > li{
-    width:300px;
+    width:200px;
 }
 
 .nav > li > a>span{
@@ -20,7 +20,7 @@
     color: #9ca3ac;
 }
 .nav:active > li > a>span{
-    color: #bfdcff;
+    color: #c2cfff;
 }
 
 .navbar-nav > li > a:hover,
@@ -39,16 +39,17 @@
 
 
 
-.navbar-nav > li > a:hover> span{
+
+
+.navbar-nav > li > a:focus > span{
     color: #000000;
     padding-bottom: 5px;
     border-bottom:  5px solid #a60fff;
 }
-
-.navbar-nav > li > a:focus> span{
-    color: #000000;
-    padding-bottom: 5px;
-    border-bottom:  5px solid #a60fff;
+.navbar-nav > li > a:hover> span{
+  color: #000000;
+  padding-bottom: 5px;
+  border-bottom:  5px solid #a60fff;
 }
 
 

@@ -29,10 +29,28 @@ var minimist = require('minimist');
 var GulpSSH = require('gulp-ssh');
 
 var distFolderUrl = "appDist";
+
+//***********开发目录中各种资源的路径*************************************************************
+var jsList = [                    //所有JS代码在开发目录中位置
+  './app/*.js',
+  './app/src/directives/*.js',
+  './app/src/controllers/*.js',
+  './app/src/services/*.js',
+  './app/src/filters/*.js',
+  './tmp/templates/*.js',
+];
+
+var cssList = [                    //所有CSS代码在开发目录中位置
+  './app/src/styles/app.css',
+  './app/src/styles/*.css'
+];
+//***************************************************************************************************
+
+//***********删除部署目录、临时目录及其他*************************************************************
 gulp.task('clean', function () {
     return del([distFolderUrl + '/**','tmp/**','dist/**']);
 });
-
+//***************************************************************************************************
 
 gulp.task('templatesTpls', function () {
     return gulp.src([
@@ -49,6 +67,7 @@ gulp.task('templatesTpls', function () {
         .pipe(uglify())
         .pipe(gulp.dest('./tmp/templates'))
 });
+
 
 gulp.task('templatesViews', function () {
     return gulp.src([
@@ -75,69 +94,25 @@ gulp.task('templatesViews', function () {
         .pipe(gulp.dest('./tmp/templates'))
 });
 
-gulp.task('copyTemplatesToDist', function () {
-    return gulp.src([
-        './app/src/templates/**/*.html',
-    ])
-        .pipe(gulp.dest(distFolderUrl + '/src/templates'));
-});
-
-gulp.task('copyTplsToDist', function () {
-    return gulp.src([
-        './app/src/directives/tpls/**/*.html',
-    ])
-        .pipe(gulp.dest(distFolderUrl + '/src/directives/tpls'));
-});
-
-// gulp.task('font', function() {
-//   return gulp.src(['./app/public/fonts/**/*'], {base: './app/'})
-//   .pipe(gulp.dest(distFolderUrl + ''))
-// });
-
-// gulp.task('images', function() {
-//   return gulp.src(['./app/public/images/**/*'], {base: './app/'})
-//   .pipe(gulp.dest(distFolderUrl + ''))
-// });
-
-gulp.task('public', function() {
+//***********开发目录的公共资源拷贝到部署目录*************************************************************
+gulp.task('public', function() {           //公共资源
     return gulp.src(['./app/public/**/*','./app/*.ico'], {base: './app/'})
         .pipe(gulp.dest(distFolderUrl))
 });
 
-
-gulp.task('vendorCss',function () {
-    return gulp.src(['./app/bower_components/**/*.css'])
-        .pipe(gulp.dest(distFolderUrl + '/vendor'))
-})
-gulp.task('vendorFont',function () {
-    return gulp.src([ './app/bower_components/bootstrap/dist/fonts/**'])
-        .pipe(gulp.dest(distFolderUrl + '/vendor/bootstrap/dist/fonts'))
-})
-gulp.task('vendorJs',function () {
-    return gulp.src('./app/bower_components/**/*.js')
-        .pipe(gulp.dest(distFolderUrl + '/vendor'))
-})
-// gulp.task('vendor', ['vendorCss', 'vendorJs', 'vendorFont']);
-
-gulp.task('vendor', function () {
+gulp.task('vendor', function () {           //框架资源
     return gulp.src(['./app/bower_components/**/*'])
         .pipe(gulp.dest(distFolderUrl + '/vendor'))
 });
 
-gulp.task('less', function () {
+gulp.task('less', function () {          //less文件转换成CSS文件
     return gulp.src('./app/src/styles/less/*.less')
         .pipe(less())
         .pipe(sourcemaps.write('./app/src/styles'))
         .pipe(gulp.dest('./app/src/styles'))
 });
 
-
-var cssList = [
-    './app/src/styles/app.css',
-    './app/src/styles/*.css'
-];
-
-gulp.task('css', ['less'], function() {
+gulp.task('css', ['less'], function() {      //CSS资源
     return gulp.src(cssList)
         .pipe(autoprefixer({
             browsers: ['last 2 versions'],
@@ -148,15 +123,26 @@ gulp.task('css', ['less'], function() {
         .pipe(gulp.dest(distFolderUrl + '/static/css'))
 })
 
+gulp.task('copyTemplatesToDist', function () {    //Angular模板html源文件
+  return gulp.src([
+    './app/src/templates/**/*.html',
+  ])
+    .pipe(gulp.dest(distFolderUrl + '/src/templates'));
+});
 
-var jsList = [                    //所有JS代码在开发目录中位置
-    './app/*.js',
-    './app/src/directives/*.js',
-    './app/src/controllers/*.js',
-    './app/src/services/*.js',
-    './app/src/filters/*.js',
-    './tmp/templates/*.js',
-];
+gulp.task('copyTplsToDist', function () {        //Angular指令中的模板html源文件
+  return gulp.src([
+    './app/src/directives/tpls/**/*.html',
+  ])
+    .pipe(gulp.dest(distFolderUrl + '/src/directives/tpls'));
+});
+
+gulp.task('html', ['copyTemplatesToDist', 'copyTplsToDist'], function () {   //所有的html源文件
+  return gulp.src(['app/index-dist.html'])
+    .pipe(rename('index.html'))
+    .pipe(gulp.dest(distFolderUrl))
+});
+//*****************************************************************************************************
 
 //***********JS代码检查*************************************************************
 gulp.task('jshint', function () {
@@ -199,15 +185,7 @@ gulp.task('htmlVendor', function () {
         .pipe(gulp.dest(distFolderUrl));
 });
 
-// gulp.task('html', ['copyTemplatesToDist', 'copyTplsToDist'], function () {
-gulp.task('html', function () {
-    return gulp.src(['app/index-dist.html'])
-        .pipe(rename('index.html'))
-        .pipe(gulp.dest(distFolderUrl))
-})
-
-
-
+//***********项目构建中实际使用的指令**************************************************
 gulp.task('build', ['public','vendor','js','css','html'], function () {
     return gulp.src(distFolderUrl + '/**/*').pipe($.size({title: 'build', gzip: true}));
 });
@@ -216,14 +194,7 @@ gulp.task('default', ['clean'], function () {
     gulp.start('build');
 });
 
-// var files = [
-//     'app/**/*.html',
-//     'app/**/*.css',
-//     'app/**/*.js',
-//     'app/public/**/*',
-//     'app/data/**/*'
-//   ];
-gulp.task('serve',  function () {
+gulp.task('server',  function () {
     browserSync({
         notify: false, // Don't show any notifications in the browser.
         port: 8082,
@@ -242,18 +213,16 @@ gulp.task('serve',  function () {
                 }
         }
     });
-
     // watch for changes
     gulp.watch([
         'app/**/*.html',
         'app/**/*.css',
         'app/**/*.js',
         'app/public/**/*',
-        'app/data/**/*'
+        'app/data/**/*',
+        'app/temp_data/*'
     ]).on('change', reload);
-
     gulp.watch('app/src/**/*.less', ['css', reload]);
-    // gulp.watch('bower.json', ['fonts', reload]);
 });
 
 gulp.task('serve-release',  function () {
@@ -266,6 +235,7 @@ gulp.task('serve-release',  function () {
     });
 
 });
+//***********************************************************************************
 
 //***********自动部署到阿里云服务器***************************************************
   //载入配置文件
@@ -276,19 +246,33 @@ var gulpSSH = new GulpSSH({
   ignoreErrors: false,
   sshConfig: sshConfig
 });
-console.log(sshConfig);
-  //删除阿里云服务器部署根目录上的文件
-gulp.task('removeRemoteFiles', function() {
-  console.log('删除服务器上现有文件...');
-  return gulpSSH.shell(config.commands, {filePath: 'commands.log'})
+
+//删除阿里云服务器部署根目录上文件
+gulp.task('removeRemoteFilesAll', function() {       //删除所有文件
+  console.log('删除服务器上所有文件...');
+  return gulpSSH.shell(config.commandsRemoveAll, {filePath: 'commands.log'})
     .pipe(gulp.dest('logs')); //在本地项目文件夹保存远程命令日志
 });
+gulp.task('removeRemoteFilesNotAll', function() {       //删除除bower_components文件夹外所有文件
+  console.log('删除服务器上除bower_components文件夹外其他文件...');
+  return gulpSSH.shell(config.commandsRemoveNotAll, {filePath: 'commands.log'})
+    .pipe(gulp.dest('logs')); //在本地项目文件夹保存远程命令日志
+});
+
 //上传本地项目文件到阿里云服务器
-gulp.task('deployAli', ['removeRemoteFiles'],function() {
+gulp.task('deployAliFirst', ['removeRemoteFilesAll'],function() {
   console.log('2s后开始上传文件...');
   setTimeout(function(){
     return gulp
       .src(['./app/**', '!**/node_modules/**'])
+      .pipe(gulpSSH.dest(config.remoteDir));
+  },2000);
+});
+gulp.task('deployAli', ['removeRemoteFilesNotAll'],function() {
+  console.log('2s后开始上传文件...');
+  setTimeout(function(){
+    return gulp
+      .src(['./app/**', '!**/bower_components/**'])
       .pipe(gulpSSH.dest(config.remoteDir));
   },2000);
 });
