@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('myApp', ['ui.router', 'ngResource'])
+angular.module('myApp', ['ui.router', 'ngResource','ngSanitize'])
   .config(function ($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise('/');            //没有匹配的路由的时候，跳转到一个默认的路径
 
@@ -27,16 +27,21 @@ angular.module('myApp', ['ui.router', 'ngResource'])
     })
   })
   .constant('localDataUrl', 'temp_data/data.json')
-  .controller('myCtrl', function ($scope, $http, $resource, localDataUrl) {
-    $scope.articalResource = $resource(localDataUrl);
-    $scope.articalResource.get({}, function (result) {
-      $scope.artical=result;
-      console.log($scope.artical.image)
-    }, function (d) {
-      console.log(d)
-    })
-
+  .controller('myCtrl', function ($scope, $http, $resource, $log, localDataUrl) {
+    var articalResource = $resource(localDataUrl, {}, {myGet: {method: 'get', isArray: true}});  //isArray表明从data.json引入的是数组不是对象
+    articalResource.myGet({}, function (result) {
+        $scope.articals = result;
+        $log.info('111')
+      }, {}
+    )
   })
+  .filter('trustHtml', function ($sce) {          //传入的字符串以html的形式进行解析并返回
+    return function (input) {
+      return $sce.trustAsHtml(input);
+    }
+  });
+
+
 
 
 

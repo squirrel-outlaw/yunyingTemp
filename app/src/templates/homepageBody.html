@@ -1,21 +1,23 @@
 <div class="row clearfix" style="height: 40px;background: white"></div>
 <div class="container">
-  <div class="col-md-8 column basic-artical">
 
-    <div class="col-lg-3 center-vertical ">
-      <a href="#" class="thumbnail " style="margin-bottom: 10px;">
-        <img src={{artical.image}}
-             alt="通用的占位符缩略图">
-      </a>
-    </div>
-    <div class="col-lg-9 center-vertical" style="text-align:center">
-      <h3>
-        {{artical.title}}
-      </h3>
-      <p>
-        {{artical.content}}
-      </p>
+  <div ng-repeat="artical in articals">
+    <div class="col-md-8 column basic-artical">
+      <div class="col-lg-3 center-vertical ">
+        <a href="#" class="thumbnail " style="margin-bottom: 10px;">
+          <img src={{artical.image}}
+               alt="通用的占位符缩略图">
+        </a>
+      </div>
+      <div class="col-lg-9 center-vertical" style="text-align:center">
+        <h3>
+          {{artical.title}}
+        </h3>
+        <p>
+          {{artical.content|limitTo:100}}...
+        </p>
+        <span ng-bind-html="artical.content | trustHtml"></span>
     </div>
   </div>
 </div>
-
+</div>

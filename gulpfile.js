@@ -225,12 +225,12 @@ gulp.task('server',  function () {
     gulp.watch('app/src/**/*.less', ['css', reload]);
 });
 
-gulp.task('serve-release',  function () {
+gulp.task('serverNoWatch',  function () {
     browserSync({
         notify: false,
         port: 8082,
         server: {
-            baseDir: [distFolderUrl]
+            baseDir: ['app']
         }
     });
 
