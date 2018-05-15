@@ -51,4 +51,7 @@ angular.module('myApp', ['ui.router', 'ngResource','ngSanitize'])
 
 
 
+$(window).scroll(function(){
+  $('#close-button').css('top', $(document).scrollTop() + $(window).height() - $('#test').height());
+});
 

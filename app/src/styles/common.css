@@ -48,16 +48,13 @@
 }
 
 .articalframe {
+  position: relative;
   margin-top: 50px;
   height: 10000px;
   border: 1px solid rgba(34, 40, 52, 0.63);
   box-shadow: 0 0 5px #000;
 }
-.fixed-button{
-  position:fixed;
-  right:80px;
-  top:120px
-}
+
 
 .bis.glyphicon-star {
   text-shadow:0 0 1px  black,0 0 1px  black,0 0 1px  black,0 0 1px  black ;
@@ -70,6 +67,9 @@
 
 .close-button{
   font-size: 30px;
+  position:absolute;
+  top:200px;
+  right:0px;
 
 }
 
