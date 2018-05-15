@@ -25,6 +25,13 @@ angular.module('myApp', ['ui.router', 'ngResource','ngSanitize'])
         'body': {templateUrl: 'src/templates/articalTwoBody.html'},
       }
     })
+    $stateProvider.state('artical_page', {               //
+      url: '/artical_page',
+      templateUrl: 'src/templates/artical_page.html'
+    })
+
+
+
   })
   .constant('localDataUrl', 'temp_data/data.json')
   .controller('myCtrl', function ($scope, $http, $resource, $log, localDataUrl) {

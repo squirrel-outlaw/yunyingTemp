@@ -1,55 +1,76 @@
-.span{
-    display:block;
-    text-align:center
+.span {
+  display: block;
+  text-align: center
 }
 
-
-.nav > li{
-    width:200px;
+.nav > li {
+  width: 200px;
 }
 
-.nav > li > a>span{
-    color: #000000;
-    font-size:20px;
-    font-family:Microsoft YaHei;
-    letter-spacing: 10px;
-    padding-left: 10px
+.nav > li > a > span {
+  color: #000000;
+  font-size: 20px;
+  font-family: Microsoft YaHei;
+  letter-spacing: 10px;
+  padding-left: 10px
 }
 
-.nav:hover > li > a>span{
-    color: #9ca3ac;
+.nav:hover > li > a > span {
+  color: #9ca3ac;
 }
-.nav:active > li > a>span{
-    color: #c2cfff;
+
+.nav:active > li > a > span {
+  color: #c2cfff;
 }
 
 .navbar-nav > li > a:hover,
-.navbar-nav > li > a:focus{
-    color: #000000;
-    font-weight:bold;
-    background-color: white ;
+.navbar-nav > li > a:focus {
+  color: #000000;
+  font-weight: bold;
+  background-color: white;
 }
-
 
 .navbar-nav > li > a:hover,
-.navbar-nav > li > a:focus>span{
-    color: #000000;
+.navbar-nav > li > a:focus > span {
+  color: #000000;
 }
 
-
-
-
-
-
-.navbar-nav > li > a:focus > span{
-    color: #000000;
-    padding-bottom: 5px;
-    border-bottom:  5px solid #a60fff;
-}
-.navbar-nav > li > a:hover> span{
+.navbar-nav > li > a:focus > span {
   color: #000000;
   padding-bottom: 5px;
-  border-bottom:  5px solid #a60fff;
+  border-bottom: 5px solid #a60fff;
+}
+
+.navbar-nav > li > a:hover > span {
+  color: #000000;
+  padding-bottom: 5px;
+  border-bottom: 5px solid #a60fff;
+}
+
+.articalframe {
+  margin-top: 50px;
+  height: 10000px;
+  border: 1px solid rgba(34, 40, 52, 0.63);
+  box-shadow: 0 0 5px #000;
+}
+.fixed-button{
+  position:fixed;
+  right:80px;
+  top:120px
+}
+
+.bis.glyphicon-star {
+  text-shadow:0 0 1px  black,0 0 1px  black,0 0 1px  black,0 0 1px  black ;
+}
+
+.glyphicon-star {
+  color: yellow;
+  text-shadow:0 0  black,0 0  black,0 0  black,0 0  black,0 0  black;
+}
+
+.close-button{
+  font-size: 30px;
+
 }
 
 
