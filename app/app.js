@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('myApp', ['ui.router', 'ngResource','ngSanitize'])
+angular.module('myApp', ['ui.router', 'ngResource', 'ngSanitize'])
   .config(function ($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise('/');            //没有匹配的路由的时候，跳转到一个默认的路径
 
@@ -31,14 +31,13 @@ angular.module('myApp', ['ui.router', 'ngResource','ngSanitize'])
     })
 
 
-
   })
   .constant('localDataUrl', 'temp_data/data.json')
   .controller('myCtrl', function ($scope, $http, $resource, $log, localDataUrl) {
     var articalResource = $resource(localDataUrl, {}, {myGet: {method: 'get', isArray: true}});  //isArray表明从data.json引入的是数组不是对象
     articalResource.myGet({}, function (result) {
         $scope.articals = result;
-        $log.info('111')
+        $log.info($scope.articals[0].title)
       }, {}
     )
   })
@@ -46,7 +45,12 @@ angular.module('myApp', ['ui.router', 'ngResource','ngSanitize'])
     return function (input) {
       return $sce.trustAsHtml(input);
     }
-  });
+  })
+  .filter('clearHtml', function () {
+    return function (input) {
+      return input.replace('/^<.+>$','');
+    }
+  })
 
 
 

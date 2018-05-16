@@ -48,31 +48,69 @@
 }
 
 .articalframe {
+  position: relative;
   margin-top: 50px;
   height: 10000px;
   border: 1px solid rgba(34, 40, 52, 0.63);
   box-shadow: 0 0 5px #000;
 }
-.fixed-button{
-  position:fixed;
-  right:80px;
-  top:120px
+
+.fixed-button {
+  position: fixed;
+  right: 80px;
+  top: 120px
 }
 
 .bis.glyphicon-star {
-  text-shadow:0 0 1px  black,0 0 1px  black,0 0 1px  black,0 0 1px  black ;
+  text-shadow: 0 0 1px black, 0 0 1px black, 0 0 1px black, 0 0 1px black;
 }
 
 .glyphicon-star {
   color: yellow;
-  text-shadow:0 0  black,0 0  black,0 0  black,0 0  black,0 0  black;
+  text-shadow: 0 0 black, 0 0 black, 0 0 black, 0 0 black, 0 0 black;
 }
 
-.close-button{
+.close-button {
   font-size: 30px;
+}
+
+.content-title {
+  margin-top: 50px;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 30px;
+  width: 800px;
+  text-align: center;
+}
+
+.small-title {
+  display: inline-block;
+  margin-top: 10px;
+  margin-left: 80%;
 
 }
 
+.from-title {
+  display: inline-block;
+}
+
+.date-title {
+  display: inline-block;
+  margin-left:30px;
+}
+
+.artical-content{
+  margin-top: 30px;
+  margin-left: 5%;
+  margin-right: 5%;
+  font-size:120%;
+  line-height:200%
+}
+
+.artical-link{
+  margin-left: 0px;
+ font-size: 150%;
+}
 
 
 

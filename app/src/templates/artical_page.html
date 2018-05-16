@@ -6,6 +6,17 @@
 <div class="container">
   <div class="articalframe">
 
+    <div class="content-title">
+      {{articals[0].title}}
+    </div>
+    <div class="small-title">
+      <div class="from-title">来源：{{articals[0].from}}</div>
+      <div class="date-title">{{articals[0].date}}</div>
+    </div>
+    <div class="artical-content" ng-bind-html="articals[0].content | trustHtml">
+
+    </div>
+
 
   </div>
 

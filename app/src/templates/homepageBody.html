@@ -9,15 +9,17 @@
                alt="通用的占位符缩略图">
         </a>
       </div>
-      <div class="col-lg-9 center-vertical" style="text-align:center">
-        <a ui-sref="artical_page">
-          {{artical.title}}
-        </a>
-        <p>
-          {{artical.content|limitTo:100}}...
-        </p>
+      <div class="col-lg-9 center-vertical" >
+        <div class="artical-link">
+          <a ui-sref="artical_page" >
+            {{artical.title}}
+          </a>
+        </div>
+        <div >
+          {{artical.content|clearHtml|limitTo:100}}...
+        </div>
         <span ng-bind-html="artical.content | trustHtml"></span>
+      </div>
     </div>
   </div>
-</div>
 </div>
