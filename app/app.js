@@ -33,13 +33,22 @@ angular.module('myApp', ['ui.router', 'ngResource', 'ngSanitize'])
 
   })
   .constant('localDataUrl', 'temp_data/data.json')
-  .controller('myCtrl', function ($scope, $http, $resource, $log, localDataUrl) {
+  .controller('myCtrl', function ($scope, $http, $resource, $log, localDataUrl,$state) {
     var articalResource = $resource(localDataUrl, {}, {myGet: {method: 'get', isArray: true}});  //isArray表明从data.json引入的是数组不是对象
     articalResource.myGet({}, function (result) {
         $scope.articals = result;
-        $log.info($scope.articals[0].title)
       }, {}
     )
+    $scope.visiable = true;
+    if ($state.$current.name == "artical_page") {
+      $scope.visiable = false
+    } else {
+      $scope.visiable = true
+    }
+  })
+  .controller('hideCtrl', function ($scope, $log, $state) {
+    $log.info($state.$current);
+
   })
   .filter('trustHtml', function ($sce) {          //传入的字符串以html的形式进行解析并返回
     return function (input) {
@@ -48,14 +57,12 @@ angular.module('myApp', ['ui.router', 'ngResource', 'ngSanitize'])
   })
   .filter('clearHtml', function () {
     return function (input) {
-      return input.replace('/^<.+>$','');
+      return input.replace(/<.*?>|&#12288;/g, '');
     }
   })
 
 
-
-
-$(window).scroll(function(){
+$(window).scroll(function () {
   $('#close-button').css('top', $(document).scrollTop() + $(window).height() - $('#test').height());
 });
 
