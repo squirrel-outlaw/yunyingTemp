@@ -8,7 +8,10 @@ angular.module('myApp', ['ui.router', 'ngResource', 'ngSanitize'])
       url: '/',
       views: {
         'header': {templateUrl: 'src/templates/header.html'},
-        'body': {templateUrl: 'src/templates/homepageBody.html'},
+        'body': {
+          templateUrl: 'src/templates/homepageBody.html',
+          controller: 'showNavCtrl'
+        },
       }
     });
     $stateProvider.state('articalOne', {
@@ -24,32 +27,38 @@ angular.module('myApp', ['ui.router', 'ngResource', 'ngSanitize'])
         'header': {templateUrl: 'src/templates/header.html'},
         'body': {templateUrl: 'src/templates/articalTwoBody.html'},
       }
-    })
+    });
     $stateProvider.state('artical_page', {               //
       url: '/artical_page',
-      templateUrl: 'src/templates/artical_page.html'
+      views: {
+        'header': {templateUrl: 'src/templates/header.html'},
+        'body': {
+          templateUrl: 'src/templates/artical_page.html',
+          controller: 'hideNavCtrl'
+        }
+      }
     })
-
-
   })
   .constant('localDataUrl', 'temp_data/data.json')
-  .controller('myCtrl', function ($scope, $http, $resource, $log, localDataUrl,$state) {
+  .controller('myCtrl', function ($scope, $http, $resource, $log, localDataUrl, $state) {
     var articalResource = $resource(localDataUrl, {}, {myGet: {method: 'get', isArray: true}});  //isArray表明从data.json引入的是数组不是对象
     articalResource.myGet({}, function (result) {
         $scope.articals = result;
       }, {}
     )
-    $scope.visiable = true;
-    if ($state.$current.name == "artical_page") {
-      $scope.visiable = false
-    } else {
-      $scope.visiable = true
-    }
-  })
-  .controller('hideCtrl', function ($scope, $log, $state) {
-    $log.info($state.$current);
 
+    $scope.data = {
+      visiable: true
+    };
   })
+  .controller('hideNavCtrl', function ($scope) {
+    $scope.data.visiable = false;
+  })
+  .controller('showNavCtrl', function ($scope) {
+    $scope.data.visiable = true;
+  })
+
+
   .filter('trustHtml', function ($sce) {          //传入的字符串以html的形式进行解析并返回
     return function (input) {
       return $sce.trustAsHtml(input);

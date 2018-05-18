@@ -14,7 +14,7 @@
 <body ng-app="myApp" ng-controller="myCtrl">
 <div ui-view="header"></div>
 <!--没有通过ui-view引入导航栏，因为如果放入，通过.state跳转时会刷新此html模板 -->
-<div ng-include="'src/templates/nav.html'" ng-show="visiable"></div>
+<div ng-include="'src/templates/nav.html'" ng-show="data.visiable"></div>
 
 <div ui-view="body"></div>
 <div ui-view></div>
