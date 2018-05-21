@@ -40,8 +40,15 @@ angular.module('myApp', ['ui.router', 'ngResource', 'ngSanitize'])
     })
   })
   .constant('localDataUrl', 'temp_data/data.json')
+  .constant('localDatabaseUrl', 'http://localhost:8888/')
   .controller('myCtrl', function ($scope, $http, $resource, $log, localDataUrl, $state) {
     var articalResource = $resource(localDataUrl, {}, {myGet: {method: 'get', isArray: true}});  //isArray表明从data.json引入的是数组不是对象
+    articalResource.myGet({}, function (result) {
+        $scope.articals = result;
+      }, {}
+    )
+
+    var temoResource= $resource(localDatabaseUrl, {}, {myGet: {method: 'get', isArray: true}});  //isArray表明从data.json引入的是数组不是对象
     articalResource.myGet({}, function (result) {
         $scope.articals = result;
       }, {}
