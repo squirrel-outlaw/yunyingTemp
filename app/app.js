@@ -18,14 +18,14 @@ angular.module('myApp', ['ui.router', 'ngResource', 'ngSanitize'])
       url: '/articalOne',
       views: {
         'header': {templateUrl: 'src/templates/header.html'},
-        'body': {templateUrl: 'src/templates/articalOneBody.html'},
+        'body': {templateUrl: 'src/templates/articalOneBody.html'}
       }
     });
     $stateProvider.state('articalTwo', {               //
       url: '/articalTwo',
       views: {
         'header': {templateUrl: 'src/templates/header.html'},
-        'body': {templateUrl: 'src/templates/articalTwoBody.html'},
+        'body': {templateUrl: 'src/templates/articalTwoBody.html'}
       }
     });
     $stateProvider.state('artical_page', {               //
@@ -37,26 +37,41 @@ angular.module('myApp', ['ui.router', 'ngResource', 'ngSanitize'])
           controller: 'hideNavCtrl'
         }
       }
+    });
+    $stateProvider.state('admin_page', {               //
+      url: '/admin_page',
+      views: {
+        'header': {templateUrl: 'src/templates/header.html'},
+        'body': {templateUrl: 'src/templates/admin_page.html'}
+      }
     })
   })
+
   .constant('localDataUrl', 'temp_data/data.json')
-  .constant('localDatabaseUrl', 'http://localhost:8888/')
-  .controller('myCtrl', function ($scope, $http, $resource, $log, localDataUrl, $state) {
+  .constant('localDatabaseUrl', 'http://localhost:8888/artical/get')
+  .controller('myCtrl', function ($scope, $http, $resource, $log,$location, localDataUrl, localDatabaseUrl, $state) {
     var articalResource = $resource(localDataUrl, {}, {myGet: {method: 'get', isArray: true}});  //isArray表明从data.json引入的是数组不是对象
     articalResource.myGet({}, function (result) {
         $scope.articals = result;
       }, {}
     )
 
-    var temoResource= $resource(localDatabaseUrl, {}, {myGet: {method: 'get', isArray: true}});  //isArray表明从data.json引入的是数组不是对象
-    articalResource.myGet({}, function (result) {
-        $scope.articals = result;
-      }, {}
-    )
+    $scope.tempResource = $resource(localDatabaseUrl + '/1');  //isArray表明从data.json引入的是数组不是对象
+
+    $scope.articals = $scope.tempResource.query(function (data) {
+      return data
+
+    });
+    $log.info($scope.articals);
 
     $scope.data = {
       visiable: true
     };
+
+    $scope.jumpToAdmin = function () {
+      $location.path('/admin_page');
+    }
+
   })
   .controller('hideNavCtrl', function ($scope) {
     $scope.data.visiable = false;
