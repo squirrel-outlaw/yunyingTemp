@@ -2,7 +2,7 @@
 
 angular.module('app.services.util', [])
   .constant('localDataUrl', '../temp_data/data.json')
-  .constant('localDatabaseUrl', 'http://localhost:8888/artical/get')
+  .constant('localDatabaseUrl', 'http://localhost:8888')
 
   .factory('dlsAPI', function (localDataUrl) {
     var dlsAPI = {};
@@ -10,4 +10,11 @@ angular.module('app.services.util', [])
       return localDataUrl + api;
     }
     return dlsAPI;
+  })
+  .factory('remoteAPI', function (localDatabaseUrl) {
+    var remoteAPI = {};
+    remoteAPI.packApi = function (api) {
+      return localDatabaseUrl + api;
+    }
+    return remoteAPI;
   })

@@ -3,7 +3,7 @@
 angular.module('myApp.appControllers', [
   'myApp.apiServices'
 ])
-  .controller('myCtrl', function ($scope,  $log, $location, fetchArticals) {
+  .controller('myCtrl', function ($scope, $log, $location, fetchArticals) {
     var articalResource = fetchArticals;
     articalResource.myGet({}, function (result) {
         $scope.articals = result;
@@ -28,6 +28,31 @@ angular.module('myApp.appControllers', [
     }
 
   })
+  .controller('manageArticalCtrl', function ($scope, $log, articalResource) {
+    $scope.artical = {title: ''};
+    $log.info($scope.artical.title);
+    var AddArticalResource = articalResource.getArticalResource('/artical/add')
+    $scope.commit = function () {
+      AddArticalResource.save('', {
+        title: $scope.artical.title,
+        from: $scope.artical.from,
+        date: $scope.artical.date,
+        content: $scope.artical.content
+      })
+    }
+   var FindAllArticalResource = articalResource.getArticalResource('/artical/find/all')
+   FindAllArticalResource.query({}, function (result) {
+       $scope.yyy = result;
+       $log.info($scope.yyy)
+     }, {}
+   )
+
+
+  })
+
+
+
+
   .controller('hideNavCtrl', function ($scope) {
     $scope.data.visiable = false;
   })
