@@ -1,6 +1,14 @@
 'use strict';
 
-angular.module('myApp', ['ui.router', 'ngResource', 'ngSanitize'])
+angular.module('myApp', [
+  'ui.router',
+  'ngResource',
+  'ngSanitize',
+  'summernote',
+  'app.services.util',
+  'myApp.apiServices',
+  'app.filters',
+  'myApp.appControllers'])
   .config(function ($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise('/');            //没有匹配的路由的时候，跳转到一个默认的路径
 
@@ -47,53 +55,4 @@ angular.module('myApp', ['ui.router', 'ngResource', 'ngSanitize'])
     })
   })
 
-  .constant('localDataUrl', 'temp_data/data.json')
-  .constant('localDatabaseUrl', 'http://localhost:8888/artical/get')
-  .controller('myCtrl', function ($scope, $http, $resource, $log,$location, localDataUrl, localDatabaseUrl, $state) {
-    var articalResource = $resource(localDataUrl, {}, {myGet: {method: 'get', isArray: true}});  //isArray表明从data.json引入的是数组不是对象
-    articalResource.myGet({}, function (result) {
-        $scope.articals = result;
-      }, {}
-    )
-
-    $scope.tempResource = $resource(localDatabaseUrl + '/1');  //isArray表明从data.json引入的是数组不是对象
-
-    $scope.articals = $scope.tempResource.query(function (data) {
-      return data
-
-    });
-    $log.info($scope.articals);
-
-    $scope.data = {
-      visiable: true
-    };
-
-    $scope.jumpToAdmin = function () {
-      $location.path('/admin_page');
-    }
-
-  })
-  .controller('hideNavCtrl', function ($scope) {
-    $scope.data.visiable = false;
-  })
-  .controller('showNavCtrl', function ($scope) {
-    $scope.data.visiable = true;
-  })
-
-
-  .filter('trustHtml', function ($sce) {          //传入的字符串以html的形式进行解析并返回
-    return function (input) {
-      return $sce.trustAsHtml(input);
-    }
-  })
-  .filter('clearHtml', function () {
-    return function (input) {
-      return input.replace(/<.*?>|&#12288;/g, '');
-    }
-  })
-
-
-$(window).scroll(function () {
-  $('#close-button').css('top', $(document).scrollTop() + $(window).height() - $('#test').height());
-});
 

@@ -2,13 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="x-ua-compatible" content="ie=edge" >
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
   <title>Title</title>
 
   <link rel="stylesheet" href="bower_components/angular-bootstrap/ui-bootstrap-csp.css">
   <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
   <link rel="stylesheet" href="bower_components/select2/dist/css/select2.min.css">
   <link rel="stylesheet" href="bower_components/select2-bootstrap/select2-bootstrap.css">
+  <link rel="stylesheet" href="bower_components/summernote/dist/summernote.css">
+
   <link rel="stylesheet" href="src/styles/common.css">
 </head>
 <body ng-app="myApp" ng-controller="myCtrl">
@@ -19,18 +21,28 @@
 <div ui-view="body"></div>
 <div ui-view></div>
 <!-- build:js scripts/vendor.js -->
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
+<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="bower_components/angular/angular.min.js"></script>
 <script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
-<script src="bower_components/angular-resource/angular-resource.js"></script>
+<script src="bower_components/angular-resource/angular-resource.min.js"></script>
 <script src="bower_components/angular-sanitize/angular-sanitize.min.js"></script>
-<script src="bower_components/jquery/dist/jquery.min.js"></script>
-<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+<script src="bower_components/angular-summernote/dist/angular-summernote.min.js"></script>
+<script src="bower_components/summernote/dist/summernote.min.js"></script>
 
+<script src="bower_components/summernote/lang/summernote-zh-CN.js"></script>
+
+
+<script src="src/filters.js"></script>
+<script src="src/services/app.util.js"></script>
+<script src="src/services/apiServices.js"></script>
+<script src="src/appControllers.js"></script>
 <script src="app.js"></script>
 <!-- endbuild -->
 <script type="text/javascript">
-  $(function () { $("[data-toggle='tooltip']").tooltip(); });
+  $(function () {
+    $("[data-toggle='tooltip']").tooltip();
+  });
 </script>
-
 </body>
 </html>

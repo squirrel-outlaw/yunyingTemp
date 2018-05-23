@@ -44,6 +44,15 @@ var cssList = [                    //所有CSS代码在开发目录中位置
   './app/src/styles/app.css',
   './app/src/styles/*.css'
 ];
+
+var watchList = [                    //所有CSS代码在开发目录中位置
+  'app/**/*.html',
+  'app/**/*.css',
+  'app/**/*.js',
+  'app/public/**/*',
+  'app/data/**/*',
+  'app/temp_data/*'
+];
 //***************************************************************************************************
 
 //***********删除部署目录、临时目录及其他*************************************************************
@@ -214,14 +223,7 @@ gulp.task('server',  function () {
         }
     });
     // watch for changes
-    gulp.watch([
-        'app/**/*.html',
-        'app/**/*.css',
-        'app/**/*.js',
-        'app/public/**/*',
-        'app/data/**/*',
-        'app/temp_data/*'
-    ]).on('change', reload);
+    gulp.watch(watchList).on('change', reload);
     gulp.watch('app/src/**/*.less', ['css', reload]);
 });
 
