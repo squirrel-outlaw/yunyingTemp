@@ -46,6 +46,7 @@ angular.module('myApp', [
         }
       }
     });
+
     $stateProvider.state('admin_page', {               //
       url: '/admin_page',
       views: {
