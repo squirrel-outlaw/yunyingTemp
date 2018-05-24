@@ -47,13 +47,29 @@ angular.module('myApp', [
       }
     });
 
-    $stateProvider.state('admin_page', {               //
-      url: '/admin_page',
+    $stateProvider.state('adminPage', {               //
+      url: '/adminPage',
       views: {
         'header': {templateUrl: 'src/templates/header.html'},
-        'body': {templateUrl: 'src/templates/admin_page.html'}
+        'body': {templateUrl: 'src/templates/adminPage.html'}
       }
     })
+    $stateProvider.state('adminPage.list', {               //
+      url: '/list',
+      views: {
+        'body': {templateUrl: 'src/templates/admin/adminPage-list.html'}
+      }
+    })
+    $stateProvider.state('adminPage.edit', {               //
+      url: '/edit',
+      views: {
+        'body': {templateUrl: 'src/templates/admin/adminPage-edit.html'}
+      }
+    })
+
+
+
   })
+
 
 

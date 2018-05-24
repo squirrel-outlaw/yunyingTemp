@@ -1,0 +1,22 @@
+<div>
+  <table class="table table-bordered adminPage-list-table">
+    <caption>边框表格布局</caption>
+    <thead>
+    <tr>
+      <th class="adminPage-list-table-title">标题</th>
+      <th class="adminPage-list-table-from">来源</th>
+      <th class="adminPage-list-table-date">日期</th>
+      <th class="adminPage-list-table-operation">操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="artical in articals">
+      <td>{{artical.title}}</td>
+      <td>{{artical.from}}</td>
+      <td>{{artical.date}}</td>
+      <td > <button type="button" class="btn btn-default" ng-click="deleteArtical(artical._id)">删除</button></td>
+
+    </tr>
+    </tbody>
+  </table>
+</div>

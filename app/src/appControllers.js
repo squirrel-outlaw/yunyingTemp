@@ -23,34 +23,37 @@ angular.module('myApp.appControllers', [
       visiable: true
     };
 
-    $scope.jumpToAdmin = function () {
-      $location.path('/admin_page');
+    $scope.jumpToTargetPage = function (target) {
+      $location.path(target);
     }
 
   })
   .controller('manageArticalCtrl', function ($scope, $log, articalResource) {
-    $scope.artical = {title: ''};
-    $log.info($scope.artical.title);
-    var AddArticalResource = articalResource.getArticalResource('/artical/add')
+    $scope.artical = {};
+    $scope.articals = [];
     $scope.commit = function () {
-      AddArticalResource.save('', {
+      var addArticalResource = articalResource.getArticalResource('/artical/add');
+      addArticalResource.save('', {
         title: $scope.artical.title,
         from: $scope.artical.from,
         date: $scope.artical.date,
         content: $scope.artical.content
       })
     }
-   var FindAllArticalResource = articalResource.getArticalResource('/artical/find/all')
-   FindAllArticalResource.query({}, function (result) {
-       $scope.yyy = result;
-       $log.info($scope.yyy)
-     }, {}
-   )
-
+    $scope.listAllArticals = function () {
+      var findAllArticalResource = articalResource.getArticalResource('/artical/find/all');
+      findAllArticalResource.query({}, function (result) {
+        $scope.articals = result;
+      }, {})
+    }
+    $scope.deleteArtical = function (arttical) {
+      var deleteArticalResource = articalResource.getArticalResource('/artical/delete/{:id}');
+      deleteArticalResource.remove({}, {
+        id: articalID
+      }, {}, {})
+    }
 
   })
-
-
 
 
   .controller('hideNavCtrl', function ($scope) {

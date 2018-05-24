@@ -1,0 +1,56 @@
+.panel-group {
+  max-height: 770px;
+  overflow: auto;
+}
+
+.adminPage-leftMenu {
+  margin: 10px;
+  margin-top: 5px;
+}
+
+.adminPage-leftMenu .panel-heading {
+  font-size: 14px;
+  padding-left: 30%;
+  height: 36px;
+  line-height: 36px;
+  color: white;
+  position: relative;
+  cursor: pointer;
+
+}
+
+/*转成手形图标*/
+.adminPage-leftMenu .panel-heading span {
+  position: absolute;
+  right: 10px;
+  top: 12px;
+}
+
+.adminPage-leftMenu .menu-item-left {
+  padding-left: 10%;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 6px;
+}
+
+.adminPage-leftMenu .menu-item-left:hover {
+  background: #C4E3F3;
+  border: 1px solid #1E90FF;
+}
+
+
+.adminPage-list-table th{
+  text-align: center;
+}
+.adminPage-list-table td{
+  text-align: center;
+}
+
+.adminPage-list-table-title{
+  width: 50%;
+}
+
+
+ .adminPage-list-table-operation{
+
+}
