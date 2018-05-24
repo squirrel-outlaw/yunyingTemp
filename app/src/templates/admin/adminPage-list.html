@@ -14,7 +14,11 @@
       <td>{{artical.title}}</td>
       <td>{{artical.from}}</td>
       <td>{{artical.date}}</td>
-      <td > <button type="button" class="btn btn-default" ng-click="deleteArtical(artical._id)">删除</button></td>
+      <td>
+        <button type="button" class="btn btn-default"
+                ng-click="deleteArtical(artical._id,artical)">删除
+        </button>
+      </td>
 
     </tr>
     </tbody>

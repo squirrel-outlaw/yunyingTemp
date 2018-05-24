@@ -10,14 +10,6 @@ angular.module('myApp.appControllers', [
       }, {}
     )
 
-    // $scope.tempResource = $resource(localDatabaseUrl + '/1');  //isArray表明从data.json引入的是数组不是对象
-
-    //$scope.articals = $scope.tempResource.query(function (data) {
-    //   return data
-
-    //  });
-    $log.info($scope.articals);
-    $log.info($scope.text);
 
     $scope.data = {
       visiable: true
@@ -44,15 +36,18 @@ angular.module('myApp.appControllers', [
       var findAllArticalResource = articalResource.getArticalResource('/artical/find/all');
       findAllArticalResource.query({}, function (result) {
         $scope.articals = result;
-      }, {})
+      }, {});
+      $log.info($scope.articals)
     }
-    $scope.deleteArtical = function (arttical) {
-      var deleteArticalResource = articalResource.getArticalResource('/artical/delete/{:id}');
-      deleteArticalResource.remove({}, {
-        id: articalID
-      }, {}, {})
-    }
+    $scope.deleteArtical = function (articalID,artical) {
+      $scope.articals.splice( $scope.articals.indexOf(artical), 1);
+      var deleteArticalResource = articalResource.getArticalResource('/artical/delete/:id');
+      deleteArticalResource.delete({},
+        {_id: articalID}, {}, {}
+      );
 
+    }
+    $scope.listAllArticals();
   })
 
 
