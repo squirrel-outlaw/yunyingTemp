@@ -3,7 +3,7 @@
 angular.module('myApp.appControllers', [
   'myApp.apiServices'
 ])
-  .controller('myCtrl', function ($scope, $log, $location, fetchArticals) {
+  .controller('myCtrl', function ($scope, $log, fetchArticals,remoteResource) {
     var articalResource = fetchArticals;
     articalResource.myGet({}, function (result) {
         $scope.articals = result;
@@ -15,41 +15,26 @@ angular.module('myApp.appControllers', [
       visiable: true
     };
 
-    $scope.jumpToTargetPage = function (target) {
-      $location.path(target);
-    }
-
-  })
-  .controller('manageArticalCtrl', function ($scope, $log, articalResource) {
     $scope.artical = {};
     $scope.articals = [];
-    $scope.commit = function () {
-      var addArticalResource = articalResource.getArticalResource('/artical/add');
-      addArticalResource.save('', {
-        title: $scope.artical.title,
-        from: $scope.artical.from,
-        date: $scope.artical.date,
-        content: $scope.artical.content
-      })
-    }
-    $scope.listAllArticals = function () {
-      var findAllArticalResource = articalResource.getArticalResource('/artical/find/all');
-      findAllArticalResource.query({}, function (result) {
-        $scope.articals = result;
-      }, {});
-      $log.info($scope.articals)
-    }
-    $scope.deleteArtical = function (articalID,artical) {
-      $scope.articals.splice( $scope.articals.indexOf(artical), 1);
-      var deleteArticalResource = articalResource.getArticalResource('/artical/delete/:id');
-      deleteArticalResource.delete({},
-        {_id: articalID}, {}, {}
-      );
 
+    $scope.articalsResource=remoteResource.getRemoteResource('/articals/:id');
+    //REST风格的.query会对远程接口生成如/articals，Request Method:GET的请求
+    $scope.listAllArticals = function () {
+      $scope.articals=$scope.articalsResource.query();
+    }
+    $scope.addArtical = function (artical) {
+      new $scope.articalsResource(artical).$save().then(function (newArtical) {
+        $scope.articals.push(newArtical);
+      });
+    }
+    $scope.deleteArtical = function (artical) {
+      //跨域请求生成Request Method:OPTIONS，Request Method:DELETE两条请求，删除本地文章必须放在前面才能实时在本地页面响应
+      $scope.articals.splice($scope.articals.indexOf(artical), 1);
+      artical.$delete();
     }
     $scope.listAllArticals();
   })
-
 
   .controller('hideNavCtrl', function ($scope) {
     $scope.data.visiable = false;

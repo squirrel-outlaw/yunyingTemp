@@ -8,8 +8,8 @@ angular.module('myApp.apiServices', [
     var api = dlsAPI.packApi("");
     return $resource(api, {}, {myGet: {method: 'get', isArray: true}})  //isArray表明从data.json引入的是数组不是对象
  })
-  .service('articalResource', function (remoteAPI, $resource) {
-    this.getArticalResource=function (mapping) {
+  .service('remoteResource', function (remoteAPI, $resource) {
+    this.getRemoteResource=function (mapping) {
       var api = remoteAPI.packApi(mapping);
       return $resource(api,{id:'@_id'})
     }
