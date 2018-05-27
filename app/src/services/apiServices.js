@@ -11,7 +11,7 @@ angular.module('myApp.apiServices', [
   .service('remoteResource', function (remoteAPI, $resource) {
     this.getRemoteResource=function (mapping) {
       var api = remoteAPI.packApi(mapping);
-      return $resource(api,{id:'@_id'})
+      return $resource(api,{id:'@id'})
     }
   })
 

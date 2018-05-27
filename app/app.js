@@ -2,7 +2,6 @@
 
 angular.module('myApp', [
   'ui.router',
-  'ngResource',
   'ngSanitize',
   'summernote',
   'app.services.util',
@@ -66,8 +65,12 @@ angular.module('myApp', [
         'body': {templateUrl: 'src/templates/admin/adminPage-edit.html'}
       }
     })
-
-
+    $stateProvider.state('adminPage.listImages', {               //
+      url: '/listImages',
+      views: {
+        'body': {templateUrl: 'src/templates/admin/adminPage-listImages.html'}
+      }
+    })
 
   })
 

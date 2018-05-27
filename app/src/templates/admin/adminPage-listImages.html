@@ -1,4 +1,4 @@
-<div>
+<div ng-controller="listImagesCtrl">
   <table class="table table-bordered adminPage-list-table">
     <caption>边框表格布局</caption>
     <thead>
@@ -10,13 +10,13 @@
     </tr>
     </thead>
     <tbody>
-    <tr ng-repeat="artical in articals">
-      <td>{{artical.title}}</td>
-      <td>{{artical.from}}</td>
-      <td>{{artical.date}}</td>
+    <tr ng-repeat="image in images">
+      <td>{{image.id}}</td>
+      <td>{{image.from}}</td>
+      <td>{{image.date}}</td>
       <td>
         <button type="button" class="btn btn-default"
-                ng-click="deleteArtical(artical)">删除
+                ng-click="deleteImage(image)">删除
         </button>
       </td>
 
@@ -24,6 +24,3 @@
     </tbody>
   </table>
 </div>
-
-
-
