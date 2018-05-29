@@ -10,8 +10,13 @@ angular.module('myApp.apiServices', [
  })
 
   .service('articalResource', function (databaseAPI, $resource) {
-      var api = databaseAPI.packApi('/articals');
+      var api = databaseAPI.packApi('/articals/:id');
       return $resource(api,{id:'@id'})
+  })
+
+  .service('imageResource', function (databaseAPI, $resource) {
+    var api = databaseAPI.packApi('/images/:id');
+    return $resource(api,{id:'@id'})
   })
 
 
