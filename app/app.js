@@ -7,7 +7,8 @@ angular.module('myApp', [
   'app.services.util',
   'myApp.apiServices',
   'app.filters',
-  'myApp.appControllers'])
+  'myApp.appControllers',
+  'ngFileUpload'])
   .config(function ($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise('/');            //没有匹配的路由的时候，跳转到一个默认的路径
 
@@ -56,7 +57,10 @@ angular.module('myApp', [
     $stateProvider.state('adminPage.list', {               //
       url: '/list',
       views: {
-        'body': {templateUrl: 'src/templates/admin/adminPage-list.html'}
+        'body': {
+          templateUrl: 'src/templates/admin/adminPage-list.html',
+          controller: 'listArticalsCtrl'
+        }
       }
     })
     $stateProvider.state('adminPage.edit', {               //

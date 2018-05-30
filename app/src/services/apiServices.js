@@ -4,10 +4,11 @@
 angular.module('myApp.apiServices', [
   "ngResource"
 ])
-  .service('fetchArticals', function (dlsAPI, $resource) {
-    var api = dlsAPI.packApi("");
-    return $resource(api, {}, {myGet: {method: 'get', isArray: true}})  //isArray表明从data.json引入的是数组不是对象
- })
+
+  .factory('aliYunImageUrl', function (databaseAPI) {
+    var api = databaseAPI.packApi('/images/upload');
+    return api
+  })
 
   .service('articalResource', function (databaseAPI, $resource) {
       var api = databaseAPI.packApi('/articals/:id');

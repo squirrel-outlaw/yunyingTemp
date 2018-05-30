@@ -10,18 +10,11 @@ angular.module('myApp.appControllers', [
     };
   })
 
-  .controller('listArticalsCtrl', function ($scope, $log, fetchArticals, remoteResource, Upload, $timeout) {
-    var articalResource = fetchArticals;
-    articalResource.myGet({}, function (result) {
-        $scope.articals = result;
-      }, {}
-    )
-
+  .controller('listArticalsCtrl', function ($scope, $log, articalResource, Upload, $timeout) {
     $scope.artical = {};
     $scope.articals = [];
-
-    $scope.articalsResource = remoteResource.getRemoteResource('/articals/:id');
-    //REST风格的.query会对远程接口生成如/articals，Request Method:GET的请求
+    $scope.articalsResource = articalResource;
+    //REST风格的.query会对远程接口生成如/articals，Request Method:GET的请求,并且返回的数组对象
     $scope.listAllArticals = function () {
       $scope.articals = $scope.articalsResource.query();
     }
@@ -66,11 +59,11 @@ angular.module('myApp.appControllers', [
 
   })
 
-  .controller('listImagesCtrl', function ($scope, $log, fetchArticals, remoteResource, Upload, $timeout) {
+  .controller('listImagesCtrl', function ($scope, $log,imageResource, Upload, $timeout) {
     $scope.image = {};
     $scope.images = [];
 
-    $scope.imagessResource = remoteResource.getRemoteResource('/images/:id');
+    $scope.imagessResource = imageResource;
     //REST风格的.query会对远程接口生成如/images，Request Method:GET的请求
     $scope.listAllimages = function () {
       $scope.images = $scope.imagessResource.query();
@@ -83,13 +76,34 @@ angular.module('myApp.appControllers', [
     $scope.deleteImage = function (image) {
       //跨域请求生成Request Method:OPTIONS，Request Method:DELETE两条请求，删除本地文章必须放在前面才能实时在本地页面响应
       $scope.images.splice($scope.images.indexOf(image), 1);
-      image.content='';
-      image.$delete();/////////////////////
+      $scope.imagessResource.delete({id:image.id},function(response){console.log(response)})
+
+
+     // image.content='';//$resource的服务$delete会把image的内容也插入到HTTP的请求体，因为图片比较大，故先把content清空，
+     // image.$delete();  // 服务器端根据图片的id来进行删除
     }
     $scope.listAllimages();
 
   })
 
+  .controller('uploadImages', function ($scope, Upload,aliYunImageUrl) {
+    $scope.upload = function (file) {
+      Upload.upload({
+        url: aliYunImageUrl,
+        data: {file: file }
+      }).then(
+        {}
+      , function (resp) {
+        console.log(resp);
+      }, function (evt) {
+        var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+        console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
+      });
+    };
+
+
+
+  })
 
   .controller('hideNavCtrl', function ($scope) {
     $scope.data.visiable = false;
