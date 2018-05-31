@@ -2,7 +2,8 @@
 
 angular.module('myApp.appControllers', [
   'myApp.apiServices',
-  'ngFileUpload'
+  'ngFileUpload',
+  'app.services.util'
 ])
   .controller('myCtrl', function ($scope) {
     $scope.data = {
@@ -10,7 +11,7 @@ angular.module('myApp.appControllers', [
     };
   })
 
-  .controller('listArticalsCtrl', function ($scope, $log, articalResource, Upload, $timeout) {
+  .controller('listArticalsCtrl', function ($scope, $log, articalResource, Upload, $timeout,aliyunOSS) {
     $scope.artical = {};
     $scope.articals = [];
     $scope.articalsResource = articalResource;
@@ -57,9 +58,12 @@ angular.module('myApp.appControllers', [
       }
     };
 
+    console.log(aliyunOSS.list())
+
+
   })
 
-  .controller('listImagesCtrl', function ($scope, $log,imageResource, Upload, $timeout) {
+  .controller('listImagesCtrl', function ($scope, $log, imageResource, Upload, $timeout) {
     $scope.image = {};
     $scope.images = [];
 
@@ -76,31 +80,38 @@ angular.module('myApp.appControllers', [
     $scope.deleteImage = function (image) {
       //跨域请求生成Request Method:OPTIONS，Request Method:DELETE两条请求，删除本地文章必须放在前面才能实时在本地页面响应
       $scope.images.splice($scope.images.indexOf(image), 1);
-      $scope.imagessResource.delete({id:image.id},function(response){console.log(response)})
+      $scope.imagessResource.delete({id: image.id}, function (response) {
+        console.log(response)
+      })
 
 
-     // image.content='';//$resource的服务$delete会把image的内容也插入到HTTP的请求体，因为图片比较大，故先把content清空，
-     // image.$delete();  // 服务器端根据图片的id来进行删除
+      // image.content='';//$resource的服务$delete会把image的内容也插入到HTTP的请求体，因为图片比较大，故先把content清空，
+      // image.$delete();  // 服务器端根据图片的id来进行删除
     }
     $scope.listAllimages();
 
   })
 
-  .controller('uploadImages', function ($scope, Upload,aliYunImageUrl) {
+  .controller('uploadImages', function ($scope, Upload, aliYunImageUrl) {
     $scope.upload = function (file) {
       Upload.upload({
         url: aliYunImageUrl,
-        data: {file: file }
+        data: {file: file}
       }).then(
-        {}
-      , function (resp) {
-        console.log(resp);
-      }, function (evt) {
-        var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-        console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
-      });
-    };
+        function (resp) {
+          $scope.imageRemoteUrl = "http:"+resp.data.url
+          console.log($scope.imageRemoteUrl)
 
+
+        }
+        , function (resp) {
+          console.log('Error status: ' + resp.status);
+          console.log(resp);
+        }, function (evt) {
+          var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+          console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
+        });
+    };
 
 
   })
