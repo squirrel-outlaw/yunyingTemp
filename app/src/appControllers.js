@@ -3,7 +3,7 @@
 angular.module('myApp.appControllers', [
   'myApp.apiServices',
   'ngFileUpload',
-  'app.services.util'
+  'app.services.util',
 ])
   .controller('myCtrl', function ($scope) {
     $scope.data = {
@@ -11,7 +11,34 @@ angular.module('myApp.appControllers', [
     };
   })
 
-  .controller('listArticalsCtrl', function ($scope, $log, articalResource, Upload, $timeout,aliyunOSS) {
+
+  .controller('addArticalsCtrl', function ($scope, articalResource,uploadImage ) {
+    $scope.uploadImage=function(picFile){
+       uploadImage.upload(picFile).then( function(response){    //使用then来获取异步响应后从服务器中返回的数据
+         $scope.artical.topicalimageUrl=response.data.url
+     });
+    }
+    $scope.addArtical = function (artical) {
+      new $scope.articalsResource(artical).$save().then(function (newArtical) {
+        $scope.articals.push(newArtical);
+      })
+    }
+  })
+
+  .controller('homepageCtrl',function ($scope,  articalResource){
+    $scope.artical = {};
+    $scope.articals = [];
+    $scope.articalsResource = articalResource;
+    $scope.listAllArticals = function () {
+      $scope.articals = $scope.articalsResource.query();
+    }
+    $scope.listAllArticals();
+  })
+
+
+
+
+  .controller('listArticalsCtrl', function ($scope, $log, articalResource, Upload, $timeout) {
     $scope.artical = {};
     $scope.articals = [];
     $scope.articalsResource = articalResource;
@@ -58,8 +85,6 @@ angular.module('myApp.appControllers', [
       }
     };
 
-    console.log(aliyunOSS.list())
-
 
   })
 
@@ -89,30 +114,6 @@ angular.module('myApp.appControllers', [
       // image.$delete();  // 服务器端根据图片的id来进行删除
     }
     $scope.listAllimages();
-
-  })
-
-  .controller('uploadImages', function ($scope, Upload, aliYunImageUrl) {
-    $scope.upload = function (file) {
-      Upload.upload({
-        url: aliYunImageUrl,
-        data: {file: file}
-      }).then(
-        function (resp) {
-          $scope.imageRemoteUrl = "http:"+resp.data.url
-          console.log($scope.imageRemoteUrl)
-
-
-        }
-        , function (resp) {
-          console.log('Error status: ' + resp.status);
-          console.log(resp);
-        }, function (evt) {
-          var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-          console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
-        });
-    };
-
 
   })
 

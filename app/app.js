@@ -18,7 +18,7 @@ angular.module('myApp', [
         'header': {templateUrl: 'src/templates/header.html'},
         'body': {
           templateUrl: 'src/templates/homepageBody.html',
-          controller: 'showNavCtrl'
+          controller: 'homepageCtrl'
         },
       }
     });
@@ -66,7 +66,11 @@ angular.module('myApp', [
     $stateProvider.state('adminPage.edit', {               //
       url: '/edit',
       views: {
-        'body': {templateUrl: 'src/templates/admin/adminPage-edit.html'}
+        'body': {
+          templateUrl: 'src/templates/admin/adminPage-edit.html',
+          controller: 'addArticalsCtrl'
+        }
+
       }
     })
     $stateProvider.state('adminPage.listImages', {               //

@@ -11,15 +11,20 @@
   <input type="text" class="form-control" ng-model="artical.date">
 </div>
 
-<summernote ng-model="artical.content" config="summernoteOptions"></summernote>
-
-<button type="button" class="btn btn-default" ng-click="addArtical(artical)">默认按钮</button>
-<div class="well" ng-bind="artical.content"></div>
-
-<div ng-controller="uploadImages">
-  <div class="button" ngf-select="upload($file)">Upload on file select</div>
+<div class="adminPage-edit-selectPic" >
+  <button class="btn btn-primary btn-lg" ngf-select="uploadImage(picFile)" ng-model="picFile" accept="image/*">
+    选择主题图片
+  </button>
+  <div>
+    <img class="thumbnail adminPage-edit-thumbnail" ng-src="{{picFile|ngfDataUrl}}"></img>
+  </div>
 </div>
-<div></div>
-<img *ngf-src="imageRemoteUrl" *ngf-background="file" ngf-resize="{width: 20, height: 20, quality: 0.9}"
-     ngf-no-object-url="true or false">
+
+<div class="adminPage-edit-summernoteFrame">
+  <summernote ng-model="artical.content" config="summernoteOptions"></summernote>
 </div>
+<button class="btn btn-primary btn-lg" class="btn btn-default" ng-click="addArtical(artical)">提交文章</button>
+
+
+
+

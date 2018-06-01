@@ -50,7 +50,19 @@
   width: 50%;
 }
 
-
  .adminPage-list-table-operation{
+}
 
+.adminPage-edit-selectPic{
+  margin-top: 20px;
+}
+.adminPage-edit-thumbnail{
+  margin-top: 20px;
+  width: 100px;
+  height: 100px;
+}
+
+
+.adminPage-edit-summernoteFrame{
+  margin-top: 20px;
 }
