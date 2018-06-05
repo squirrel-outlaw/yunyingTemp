@@ -3,7 +3,7 @@
 
 angular.module('app.services.util',[] )
 // .constant('localDataUrl', '../temp_data/data.json')
-  .constant('aliYunUrl', 'http://localhost:8888')
+  .constant('aliYunUrl', 'http://39.106.161.227:8080/yunyingdatabase')
 
   .factory('databaseAPI', function (aliYunUrl) {
     var databaseAPI = {};
