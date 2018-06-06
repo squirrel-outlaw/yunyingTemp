@@ -1,5 +1,5 @@
 
-<div class="container page-body-frame" ng-controller="listArticalsCtrl">
+<div class="container page-body-frame" >
   <div ng-repeat="artical in articals">
     <div class="col-lg-12 artical-index-frame">
       <div class="col-lg-3 center-vertical ">
@@ -10,7 +10,7 @@
       </div>
       <div class="col-lg-9 center-vertical" >
         <div class="artical-link">
-          <a ui-sref="artical_page" >
+          <a ui-sref="artical_page({articalId:artical.id})" >
             {{artical.title}}
           </a>
         </div>

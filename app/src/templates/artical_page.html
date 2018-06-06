@@ -1,25 +1,19 @@
-
-
-<div class="container articalframe" >
-
-    <a ui-sref="home">
-      <span class="glyphicon glyphicon-remove-sign fixed-button close-button" aria-hidden="true"></span>
-    </a>
-
-    <div class="content-title">
-      {{articals[0].title}}
-    </div>
-    <div class="small-title">
-      <div class="articalpage-from-title">来源：{{articals[0].from}}</div>
-      <div class="articalpage-date-title">{{articals[0].date}}</div>
-    </div>
-    <div class="articalpage-image">
-      <img ng-src={{articals[0].image}}>
-
-    </div>
-    <div class="articalpage-content" ng-bind-html="articals[0].content | trustHtml">
-    </div>
-
+<div class="container articalframe">
+  <a ui-sref="home">
+    <span class="glyphicon glyphicon-remove-sign fixed-button close-button" aria-hidden="true"></span>
+  </a>
+  <div class="content-title">
+    {{artical.title}}
+  </div>
+  <div class="small-title">
+    <div class="articalpage-from-title">来源：{{artical.from}}</div>
+    <div class="articalpage-date-title">{{artical.date}}</div>
+  </div>
+  <div class="articalpage-image">
+    <img ng-src={{artical.image}}>
+  </div>
+  <div class="articalpage-content" ng-bind-html="artical.content | trustHtml">
+  </div>
 </div>
 
 

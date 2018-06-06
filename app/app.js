@@ -37,12 +37,13 @@ angular.module('myApp', [
       }
     });
     $stateProvider.state('artical_page', {               //
-      url: '/artical_page',
+      params:{articalId:null},
+      url: '/artical_page/:articalId',
       views: {
         'header': {templateUrl: 'src/templates/header.html'},
         'body': {
           templateUrl: 'src/templates/artical_page.html',
-          controller: 'hideNavCtrl'
+          controller: 'getArticalByIdCtrl'
         }
       }
     });

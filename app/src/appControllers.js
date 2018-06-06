@@ -4,6 +4,7 @@ angular.module('myApp.appControllers', [
   'myApp.apiServices',
   'ngFileUpload',
   'app.services.util',
+  'ui.bootstrap'
 ])
   .controller('myCtrl', function ($scope) {
     $scope.data = {
@@ -12,56 +13,17 @@ angular.module('myApp.appControllers', [
   })
 
 
-  .controller('addArticalsCtrl', function ($scope, articalResource,uploadImage ) {
-    $scope.uploadImage=function(picFile){
-       uploadImage.upload(picFile).then( function(response){    //使用then来获取异步响应后从服务器中返回的数据
-         $scope.artical.topicalimageUrl=response.data.url
-     });
-    }
+  .controller('addArticalsCtrl', function ($scope, articalResource, uploadImage,$uibModal) {
+    $scope.uploadImage = function (picFile) {
+      uploadImage.upload(picFile).then(function (response) {    //使用then来获取异步响应后从服务器中返回的数据
+        $scope.artical.topicalimageUrl = response.data.url
+      });
+    };
     $scope.addArtical = function (artical) {
       new $scope.articalsResource(artical).$save().then(function (newArtical) {
         $scope.articals.push(newArtical);
       })
-    }
-  })
-
-  .controller('homepageCtrl',function ($scope,  articalResource){
-    $scope.artical = {};
-    $scope.articals = [];
-    $scope.articalsResource = articalResource;
-    $scope.listAllArticals = function () {
-      $scope.articals = $scope.articalsResource.query();
-    }
-    $scope.listAllArticals();
-  })
-
-
-
-
-  .controller('listArticalsCtrl', function ($scope, $log, articalResource, Upload, $timeout) {
-    $scope.artical = {};
-    $scope.articals = [];
-    $scope.articalsResource = articalResource;
-    //REST风格的.query会对远程接口生成如/articals，Request Method:GET的请求,并且返回的数组对象
-    $scope.listAllArticals = function () {
-      $scope.articals = $scope.articalsResource.query();
-    }
-    $scope.addArtical = function (artical) {
-      new $scope.articalsResource(artical).$save().then(function (newArtical) {
-        $scope.articals.push(newArtical);
-      });
-    }
-    $scope.deleteArtical = function (artical) {
-      //跨域请求生成Request Method:OPTIONS，Request Method:DELETE两条请求，删除本地文章必须放在前面才能实时在本地页面响应
-      $scope.articals.splice($scope.articals.indexOf(artical), 1);
-      artical.$delete().then(function successCallback(response) {
-        // this callback will be called asynchronously
-        // when the response is available
-      });
-    }
-    $scope.listAllArticals();
-
-
+    };
     $scope.summernoteOptions = {
       height: 1000,
       focus: true,
@@ -85,8 +47,81 @@ angular.module('myApp.appControllers', [
       }
     };
 
+    $scope.open = function (size) {
+      $scope.addArtical($scope.artical);
+      var modalInstance = $uibModal.open({
+        animation: $scope.animationsEnabled,
+        templateUrl: 'editArticalResultModal.html',
+        controller: 'editArticalResultModalInstanceCtrl',
+        controllerAs: 'mic',
+        backdrop: "static",
+        size: size,
+        resolve: {
+          items1: function () {
+            return $scope.items;
+          }
+        }
+      });
+      modalInstance.result.then(function () {
+      }, function () {
+      });
+    };
+    $scope.toggleAnimation = function () {
+      $scope.animationsEnabled = !$scope.animationsEnabled;
+    };
 
   })
+
+  .controller('homepageCtrl', function ($scope, articalResource) {
+    $scope.data.visiable = true;
+    $scope.artical = {};
+    $scope.articals = [];
+    $scope.articalsResource = articalResource;
+    $scope.listAllArticals = function () {
+      $scope.articals = $scope.articalsResource.query();
+    };
+    $scope.listAllArticals();
+  })
+
+  .controller('listArticalsCtrl', function ($scope, $log, articalResource, Upload, $timeout) {
+    $scope.artical = {};
+    $scope.articals = [];
+    $scope.articalsResource = articalResource;
+    //REST风格的.query会对远程接口生成如/articals，Request Method:GET的请求,并且返回的数组对象
+    $scope.listAllArticals = function () {
+      $scope.articals = $scope.articalsResource.query();
+    };
+    $scope.addArtical = function (artical) {
+      new $scope.articalsResource(artical).$save().then(function (newArtical) {
+        $scope.articals.push(newArtical);
+      });
+    };
+    $scope.deleteArtical = function (artical) {
+      //跨域请求生成Request Method:OPTIONS，Request Method:DELETE两条请求，删除本地文章必须放在前面才能实时在本地页面响应
+      $scope.articals.splice($scope.articals.indexOf(artical), 1);
+      artical.$delete().then(function successCallback(response) {
+        // this callback will be called asynchronously
+        // when the response is available
+      });
+    };
+    $scope.listAllArticals();
+  })
+
+  .controller('getArticalByIdCtrl', function ($scope,$stateParams, articalResource) {
+    $scope.data.visiable = false;
+
+    $scope.artical = {};
+    $scope.articalsResource = articalResource;
+    $scope.getArtical = function (id) {
+      $scope.artical = $scope.articalsResource.get({id:id});
+    };
+    $scope.getArtical($stateParams.articalId)
+  })
+
+
+
+
+
 
   .controller('listImagesCtrl', function ($scope, $log, imageResource, Upload, $timeout) {
     $scope.image = {};
@@ -96,23 +131,19 @@ angular.module('myApp.appControllers', [
     //REST风格的.query会对远程接口生成如/images，Request Method:GET的请求
     $scope.listAllimages = function () {
       $scope.images = $scope.imagessResource.query();
-    }
+    };
     $scope.addImage = function (image) {
       new $scope.imagessResource(image).$save().then(function (newImage) {
         $scope.images.push(newImage);
       });
-    }
+    };
     $scope.deleteImage = function (image) {
       //跨域请求生成Request Method:OPTIONS，Request Method:DELETE两条请求，删除本地文章必须放在前面才能实时在本地页面响应
       $scope.images.splice($scope.images.indexOf(image), 1);
       $scope.imagessResource.delete({id: image.id}, function (response) {
         console.log(response)
       })
-
-
-      // image.content='';//$resource的服务$delete会把image的内容也插入到HTTP的请求体，因为图片比较大，故先把content清空，
-      // image.$delete();  // 服务器端根据图片的id来进行删除
-    }
+    };
     $scope.listAllimages();
 
   })
@@ -126,3 +157,46 @@ angular.module('myApp.appControllers', [
 
 
 
+  //$uibModalInstance是模态窗口的实例
+  .controller('editArticalResultModalInstanceCtrl', function ($uibModalInstance, items1) {
+    this.ok = function () {
+      $uibModalInstance.close();
+    };
+    this.cancel = function () {
+      $uibModalInstance.dismiss('cancel');
+    };
+  })
+
+  .controller('registerModalCtrl', function ($scope, $uibModal, $log) {
+    $scope.open = function (size) {
+      var modalInstance = $uibModal.open({
+        animation: $scope.animationsEnabled,
+        templateUrl: 'registerModal.html',
+        controller: 'registerModalInstanceCtrl',
+        controllerAs: 'mic',
+        backdrop: "static",
+        size: size,
+        resolve: {
+          items1: function () {
+            return $scope.items;
+          }
+        }
+      });
+      modalInstance.result.then(function () {
+      }, function () {
+      });
+    };
+    $scope.toggleAnimation = function () {
+      $scope.animationsEnabled = !$scope.animationsEnabled;
+    };
+  })
+
+  //$uibModalInstance是模态窗口的实例
+  .controller('registerModalInstanceCtrl', function ($uibModalInstance, items1) {
+    this.ok = function () {
+      $uibModalInstance.close();
+    };
+    this.cancel = function () {
+      $uibModalInstance.dismiss('cancel');
+    };
+  });

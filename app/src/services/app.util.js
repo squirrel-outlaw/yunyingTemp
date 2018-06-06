@@ -1,6 +1,5 @@
 'use strict';
 
-
 angular.module('app.services.util',[] )
 // .constant('localDataUrl', '../temp_data/data.json')
   .constant('aliYunUrl', 'http://39.106.161.227:8080/yunyingdatabase')
