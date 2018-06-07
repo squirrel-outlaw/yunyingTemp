@@ -20,6 +20,11 @@ angular.module('myApp.apiServices', [
     return $resource(api,{id:'@id'})
   })
 
+  .service('aliSmsResource', function (databaseAPI, $resource) {
+    var api = databaseAPI.packApi('/sendSms');
+    return $resource(api)
+  })
+
 
 
 

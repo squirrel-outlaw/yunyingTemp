@@ -192,11 +192,15 @@ angular.module('myApp.appControllers', [
   })
 
   //$uibModalInstance是模态窗口的实例
-  .controller('registerModalInstanceCtrl', function ($uibModalInstance, items1) {
+  .controller('registerModalInstanceCtrl', function ($uibModalInstance,aliSmsResource) {
+    this.checkCodeQuery={};
     this.ok = function () {
       $uibModalInstance.close();
     };
     this.cancel = function () {
       $uibModalInstance.dismiss('cancel');
     };
+    this.getSmsCheckCode=function () {
+      this.aliSmsResource(this.checkCodeQuery).$save();
+    }
   });
