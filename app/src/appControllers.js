@@ -13,7 +13,7 @@ angular.module('myApp.appControllers', [
   })
 
 
-  .controller('addArticalsCtrl', function ($scope, articalResource, uploadImage,$uibModal) {
+  .controller('addArticalsCtrl', function ($scope, articalResource, uploadImage, $uibModal) {
     $scope.uploadImage = function (picFile) {
       uploadImage.upload(picFile).then(function (response) {    //使用then来获取异步响应后从服务器中返回的数据
         $scope.artical.topicalimageUrl = response.data.url
@@ -107,20 +107,16 @@ angular.module('myApp.appControllers', [
     $scope.listAllArticals();
   })
 
-  .controller('getArticalByIdCtrl', function ($scope,$stateParams, articalResource) {
+  .controller('getArticalByIdCtrl', function ($scope, $stateParams, articalResource) {
     $scope.data.visiable = false;
 
     $scope.artical = {};
     $scope.articalsResource = articalResource;
     $scope.getArtical = function (id) {
-      $scope.artical = $scope.articalsResource.get({id:id});
+      $scope.artical = $scope.articalsResource.get({id: id});
     };
     $scope.getArtical($stateParams.articalId)
   })
-
-
-
-
 
 
   .controller('listImagesCtrl', function ($scope, $log, imageResource, Upload, $timeout) {
@@ -167,7 +163,7 @@ angular.module('myApp.appControllers', [
     };
   })
 
-  .controller('registerModalCtrl', function ($scope, $uibModal, $log) {
+  .controller('registerModalCtrl', function ($scope, $uibModal) {
     $scope.open = function (size) {
       var modalInstance = $uibModal.open({
         animation: $scope.animationsEnabled,
@@ -192,15 +188,40 @@ angular.module('myApp.appControllers', [
   })
 
   //$uibModalInstance是模态窗口的实例
-  .controller('registerModalInstanceCtrl', function ($uibModalInstance,aliSmsResource) {
-    this.checkCodeQuery={};
+  .controller('registerModalInstanceCtrl', function ($uibModalInstance, aliSmsResource, $interval,$scope) {
+    $scope.buttonValue = '免费获取验证码';
+    $scope.countDownTime = 60;
+    $scope.countDown = $scope.countDownTime + '秒 ';
+    this.checkCodeQuery = {};
     this.ok = function () {
       $uibModalInstance.close();
     };
     this.cancel = function () {
       $uibModalInstance.dismiss('cancel');
     };
-    this.getSmsCheckCode=function () {
-      this.aliSmsResource(this.checkCodeQuery).$save();
+    this.getSmsCheckCode = function (checkCodeQuery) {
+      aliSmsResource.save(checkCodeQuery);
+      this.buttonValue = this.countDown;
+
+
+      var timer = $interval(this.temp
+        , 1000);
     }
+
+
+
+
+
+    this.temp = function () {
+     $scope.countDownTime--;
+      console.log( $scope.countDownTime)
+      $scope.countDown = $scope.countDownTime + '秒 ';
+      $scope.buttonValue=$scope.countDown;
+      //$scope.text = $scope.n + "秒";
+      // if (this.countDownTime == 0) {
+      //   $interval.cancel(timer);
+      //$scope.isDisable = false;
+      //   this.buttonValue = '免费获取验证码';
+      //  }
+    };
   });
